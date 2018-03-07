@@ -31,16 +31,16 @@ import unittest
 import httplib2
 import mock
 
-from oauth2._compat import b
-from oauth2._compat import unquote
-from oauth2._compat import urlencode
-from oauth2._compat import urlparse
-from oauth2._compat import urlunparse
-from oauth2._compat import parse_qs
-from oauth2._compat import parse_qsl
-from oauth2._compat import u
+from oauth1._compat import b
+from oauth1._compat import unquote
+from oauth1._compat import urlencode
+from oauth1._compat import urlparse
+from oauth1._compat import urlunparse
+from oauth1._compat import parse_qs
+from oauth1._compat import parse_qsl
+from oauth1._compat import u
 
-import oauth2 as oauth
+import oauth1 as oauth
 
 _UEMPTY = u('')
 _UBLANK = u(' ')
@@ -898,8 +898,8 @@ class TestRequest(unittest.TestCase, ReallyEqualMixin):
         expected = urlencode(sorted(params.items())).replace('+', '%20')
         self.assertEqual(expected, res)
 
-    @mock.patch('oauth2.Request.make_timestamp')
-    @mock.patch('oauth2.Request.make_nonce')
+    @mock.patch('oauth1.Request.make_timestamp')
+    @mock.patch('oauth1.Request.make_nonce')
     def test_request_nonutf8_bytes(self, mock_make_nonce, mock_make_timestamp):
         mock_make_nonce.return_value = 5
         mock_make_timestamp.return_value = 6
@@ -1282,7 +1282,7 @@ class TestServer(unittest.TestCase):
             self.token)
 
     def test_verify_request_missing_signature(self):
-        from oauth2 import MissingSignature
+        from oauth1 import MissingSignature
         server = oauth.Server()
         server.add_signature_method(oauth.SignatureMethod_PLAINTEXT())
         del self.request['oauth_signature_method']
@@ -1623,7 +1623,7 @@ class TestClient(unittest.TestCase):
         client.request(uri, 'GET')
 
     @mock.patch('httplib2.Http.request')
-    @mock.patch('oauth2.Request.from_consumer_and_token')
+    @mock.patch('oauth1.Request.from_consumer_and_token')
     def test_multiple_values_for_a_key(self, mockReqConstructor, mockHttpRequest):
         client = oauth.Client(self.consumer, None)
 
